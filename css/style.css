@@ -1,0 +1,1033 @@
+/* 全局样式 */
+:root {
+    --hsbc-red: #db0011;
+    --hsbc-dark-red: #b10e1e;
+    --hsbc-black: #333333;
+    --hsbc-gray: #f5f5f5;
+    --hsbc-dark-gray: #999999;
+    --hsbc-light-gray: #e8e8e8;
+    --hsbc-white: #ffffff;
+}
+
+body {
+    font-family: 'Arial', 'Helvetica', sans-serif;
+    color: var(--hsbc-dark-gray);
+    line-height: 1.6;
+    background-color: var(--hsbc-white);
+}
+
+/* 通用组件样式 */
+.section-title {
+    margin-bottom: 2rem;
+    font-weight: 700;
+    color: var(--hsbc-dark-gray);
+}
+
+.section-description {
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+    color: #666;
+}
+
+.btn-hsbc {
+    background-color: var(--hsbc-red);
+    border-color: var(--hsbc-red);
+    color: var(--hsbc-white);
+    font-weight: 600;
+    padding: 0.5rem 1.5rem;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+.btn-hsbc:hover, .btn-hsbc:focus {
+    background-color: var(--hsbc-dark-red);
+    border-color: var(--hsbc-dark-red);
+    color: var(--hsbc-white);
+}
+
+/* 头部导航 */
+.header {
+    background-color: var(--hsbc-white);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.navbar {
+    padding: 0.8rem 0;
+}
+
+.logo {
+    height: 40px;
+    margin-right: 10px;
+}
+
+.brand-name {
+    font-weight: 700;
+    color: var(--hsbc-red);
+    font-size: 1.5rem;
+}
+
+.nav-link {
+    color: var(--hsbc-dark-gray);
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    transition: color 0.3s ease;
+}
+
+.nav-link:hover, .nav-link.active {
+    color: var(--hsbc-red);
+}
+
+/* 英雄区域 */
+.hero-section {
+    padding: 5rem 0;
+    background-color: var(--hsbc-light-gray);
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-title {
+    font-size: 2.8rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    color: var(--hsbc-dark-gray);
+}
+
+.hero-subtitle {
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+    color: #555;
+}
+
+.hero-buttons {
+    margin-top: 2rem;
+}
+
+.hero-image {
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+/* 特点介绍 */
+.features-section {
+    padding: 5rem 0;
+    background-color: var(--hsbc-white);
+}
+
+.feature-card {
+    background-color: var(--hsbc-white);
+    border-radius: 8px;
+    padding: 2rem;
+    text-align: center;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    height: 100%;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.feature-icon {
+    font-size: 2.5rem;
+    color: var(--hsbc-red);
+    margin-bottom: 1.5rem;
+}
+
+.feature-card h3 {
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+/* 健康分析模块 */
+.health-analysis-section {
+    padding: 5rem 0;
+    background-color: var(--hsbc-light-gray);
+}
+
+.upload-area {
+    border: 2px dashed #ccc;
+    border-radius: 8px;
+    padding: 3rem;
+    text-align: center;
+    margin: 2rem 0;
+    transition: border-color 0.3s ease;
+}
+
+.upload-area:hover {
+    border-color: var(--hsbc-red);
+}
+
+.upload-icon {
+    font-size: 3rem;
+    color: var(--hsbc-red);
+    margin-bottom: 1rem;
+}
+
+.nav-tabs .nav-link {
+    color: var(--hsbc-dark-gray);
+    font-weight: 500;
+    border: none;
+    padding: 0.75rem 1.5rem;
+}
+
+.nav-tabs .nav-link.active {
+    color: var(--hsbc-red);
+    border-bottom: 2px solid var(--hsbc-red);
+    background-color: transparent;
+}
+
+/* 风险评估模块 */
+.risk-assessment-section {
+    padding: 5rem 0;
+    background-color: var(--hsbc-white);
+}
+
+.risk-score, .health-score {
+    position: relative;
+    width: 200px;
+    height: 200px;
+    margin: 0 auto;
+}
+
+.score-value {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 3rem;
+    font-weight: 700;
+    color: var(--hsbc-dark-gray);
+}
+
+.risk-factors-list, .prevention-tips-list {
+    padding-left: 1.5rem;
+}
+
+.risk-factors-list li, .prevention-tips-list li {
+    margin-bottom: 0.5rem;
+}
+
+/* 分享卡片样式 */
+.share-card {
+    background-color: var(--hsbc-white);
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    max-width: 350px;
+    margin: 0 auto;
+}
+
+.share-card-header {
+    background-color: var(--hsbc-red);
+    color: var(--hsbc-white);
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.share-card-logo {
+    height: 30px;
+}
+
+.share-card-header h5 {
+    margin: 0;
+    font-weight: 600;
+}
+
+.share-card-body {
+    padding: 1.5rem;
+    display: flex;
+    align-items: center;
+}
+
+.share-card-avatar {
+    text-align: center;
+    margin-right: 1.5rem;
+}
+
+.share-card-avatar i {
+    font-size: 3rem;
+    color: var(--hsbc-dark-gray);
+}
+
+.share-card-avatar p {
+    margin-top: 0.5rem;
+    margin-bottom: 0;
+    font-weight: 500;
+}
+
+.share-card-info {
+    flex: 1;
+}
+
+.share-card-score {
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.score-circle {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: var(--hsbc-red);
+    color: var(--hsbc-white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+}
+
+.score-circle span {
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.share-card-score p {
+    margin-top: 0.5rem;
+    margin-bottom: 0;
+    font-size: 0.9rem;
+}
+
+.share-card-level h6 {
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+    color: #666;
+}
+
+.share-card-level p {
+    font-weight: 600;
+    margin-bottom: 0;
+    color: var(--hsbc-dark-gray);
+}
+
+.share-card-footer {
+    background-color: #f8f9fa;
+    padding: 1rem;
+    text-align: center;
+    border-top: 1px solid #eee;
+}
+
+.share-card-footer p {
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.share-card-qrcode {
+    width: 80px;
+    height: 80px;
+    background-color: var(--hsbc-white);
+    border: 1px solid #ddd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+}
+
+.share-card-qrcode i {
+    font-size: 3rem;
+    color: var(--hsbc-dark-gray);
+}
+
+/* 保险推荐模块 */
+.insurance-recommendation-section {
+    background-color: var(--hsbc-white);
+    padding: 2rem 0;
+}
+
+.insurance-recommendation-form .form-group {
+    margin-bottom: 1.5rem;
+}
+
+.insurance-recommendation-form .form-label {
+    font-weight: 500;
+    color: var(--hsbc-black);
+}
+
+.form-check-input:checked {
+    background-color: var(--hsbc-red);
+    border-color: var(--hsbc-red);
+}
+
+.insurance-product-card {
+    border: 1px solid var(--hsbc-light-gray);
+    border-radius: 8px;
+    overflow: hidden;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.insurance-product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.product-header {
+    background-color: var(--hsbc-red);
+    padding: 1rem;
+    color: var(--hsbc-white);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.product-header h5 {
+    margin: 0;
+    font-weight: 600;
+}
+
+.match-score .match-badge {
+    background-color: rgba(255, 255, 255, 0.25);
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.product-body {
+    padding: 1.5rem;
+    flex-grow: 1;
+}
+
+.product-description {
+    color: var(--hsbc-black);
+    margin-bottom: 1.5rem;
+    font-size: 0.9rem;
+}
+
+.product-feature {
+    margin-bottom: 1.25rem;
+}
+
+.product-feature h6 {
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+    color: var(--hsbc-black);
+}
+
+.premium-amount {
+    color: var(--hsbc-red);
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-bottom: 0;
+}
+
+.feature-list {
+    padding-left: 1.25rem;
+    margin-bottom: 0;
+    font-size: 0.85rem;
+}
+
+.feature-list li {
+    margin-bottom: 0.5rem;
+}
+
+.feature-list li:last-child {
+    margin-bottom: 0;
+}
+
+.product-footer {
+    padding: 1rem;
+    background-color: var(--hsbc-gray);
+    border-top: 1px solid var(--hsbc-light-gray);
+}
+
+.recommendation-note {
+    font-size: 0.85rem;
+    border-left: 3px solid var(--hsbc-red);
+}
+
+/* 联系我们模块 */
+.contact-section {
+    padding: 5rem 0;
+    background-color: var(--hsbc-white);
+}
+
+/* 页脚 */
+.footer {
+    background-color: var(--hsbc-dark-gray);
+    color: var(--hsbc-white);
+    padding: 4rem 0 2rem;
+}
+
+.footer-logo {
+    height: 40px;
+    margin-bottom: 1rem;
+}
+
+.footer h5 {
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    color: var(--hsbc-white);
+}
+
+.footer-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-links li {
+    margin-bottom: 0.8rem;
+}
+
+.footer-links a {
+    color: #ccc;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.footer-links a:hover {
+    color: var(--hsbc-white);
+}
+
+.social-links {
+    display: flex;
+    gap: 1rem;
+}
+
+.social-links a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    color: var(--hsbc-white);
+    transition: background-color 0.3s ease;
+}
+
+.social-links a:hover {
+    background-color: var(--hsbc-red);
+}
+
+.footer-bottom {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.copyright {
+    margin-bottom: 0;
+}
+
+.footer-bottom-links a {
+    color: #ccc;
+    text-decoration: none;
+    margin-left: 1.5rem;
+    transition: color 0.3s ease;
+}
+
+.footer-bottom-links a:hover {
+    color: var(--hsbc-white);
+}
+
+/* 体检历史管理页面样式 */
+.health-records-section {
+    background-color: var(--hsbc-gray);
+    padding: 3rem 0;
+}
+
+.health-records-list {
+    max-height: 450px;
+    overflow-y: auto;
+}
+
+.health-record-item {
+    cursor: pointer;
+    border-left: 3px solid transparent;
+    transition: all 0.3s ease;
+}
+
+.health-record-item:hover {
+    background-color: rgba(219, 0, 17, 0.05);
+}
+
+.health-record-item.active {
+    border-left-color: var(--hsbc-red);
+    background-color: rgba(219, 0, 17, 0.1);
+}
+
+.health-record-date {
+    font-weight: 600;
+    color: var(--hsbc-black);
+}
+
+.health-record-institution {
+    font-size: 0.85rem;
+    color: var(--hsbc-dark-gray);
+}
+
+.record-details-container {
+    padding: 1rem;
+}
+
+.details-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.details-header .record-date {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--hsbc-black);
+}
+
+.details-header .record-institution {
+    color: var(--hsbc-dark-gray);
+    font-size: 1rem;
+}
+
+.details-header .action-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.details-section {
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--hsbc-light-gray);
+}
+
+.details-section:last-child {
+    border-bottom: none;
+}
+
+.details-section h5 {
+    color: var(--hsbc-dark-gray);
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.indicator-row {
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 1.5rem;
+}
+
+.indicator-item {
+    flex: 0 0 33.33%;
+    margin-bottom: 1rem;
+}
+
+.indicator-label {
+    font-size: 0.85rem;
+    color: var(--hsbc-dark-gray);
+    margin-bottom: 0.25rem;
+}
+
+.indicator-value {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--hsbc-black);
+}
+
+.indicator-value.normal {
+    color: #28a745;
+}
+
+.indicator-value.warning {
+    color: #ffc107;
+}
+
+.indicator-value.danger {
+    color: var(--hsbc-red);
+}
+
+.health-chart-container {
+    height: 300px;
+    margin-bottom: 1.5rem;
+}
+
+.empty-state {
+    color: var(--hsbc-dark-gray);
+}
+
+.report-file-container {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    background-color: var(--hsbc-gray);
+    border-radius: 4px;
+    margin-bottom: 1rem;
+}
+
+.report-file-icon {
+    font-size: 2rem;
+    margin-right: 1rem;
+    color: var(--hsbc-red);
+}
+
+.report-file-info {
+    flex: 1;
+}
+
+.report-file-name {
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+}
+
+.report-file-size {
+    font-size: 0.85rem;
+    color: var(--hsbc-dark-gray);
+}
+
+.report-file-actions {
+    display: flex;
+    gap: 10px;
+}
+
+/* 添加记录模态框样式 */
+.modal-header {
+    background-color: var(--hsbc-red);
+    color: white;
+}
+
+.modal-header .btn-close {
+    color: white;
+    filter: brightness(10);
+}
+
+/* 浮动对话演示浮窗 */
+.chat-demo-launcher {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: var(--hsbc-red);
+    color: var(--hsbc-white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
+    transition: all 0.3s ease;
+}
+
+.chat-demo-launcher i {
+    font-size: 24px;
+}
+
+.chat-demo-launcher:hover {
+    background-color: var(--hsbc-dark-red);
+    transform: scale(1.05);
+}
+
+.chat-demo-container {
+    position: fixed;
+    bottom: 80px;
+    right: 20px;
+    width: 350px;
+    height: 500px;
+    background-color: var(--hsbc-white);
+    border-radius: 10px;
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    z-index: 1000;
+    transition: all 0.3s ease;
+    opacity: 0;
+    transform: translateY(20px) scale(0.9);
+    pointer-events: none;
+}
+
+.chat-demo-container.active {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    pointer-events: all;
+}
+
+.chat-demo-container.minimized {
+    height: 60px;
+    overflow: hidden;
+}
+
+.chat-demo-header {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    background-color: var(--hsbc-red);
+    color: var(--hsbc-white);
+}
+
+.chat-demo-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: var(--hsbc-white);
+    color: var(--hsbc-red);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 12px;
+}
+
+.chat-demo-avatar i {
+    font-size: 20px;
+}
+
+.chat-demo-title {
+    flex: 1;
+}
+
+.chat-demo-title h5 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.chat-demo-title p {
+    margin: 0;
+    font-size: 12px;
+    opacity: 0.8;
+}
+
+.chat-demo-controls {
+    display: flex;
+}
+
+.chat-demo-controls button {
+    background: none;
+    border: none;
+    color: var(--hsbc-white);
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+}
+
+.chat-demo-controls button:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.chat-demo-body {
+    flex: 1;
+    overflow: hidden;
+    padding: 15px;
+    background-color: #f8f9fa;
+    display: flex;
+    flex-direction: column;
+}
+
+.chat-demo-messages {
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    max-height: 300px;
+    padding-right: 5px;
+}
+
+.chat-message {
+    max-width: 80%;
+    margin-bottom: 15px;
+    padding: 10px 15px;
+    border-radius: 18px;
+    position: relative;
+    animation: fadeIn 0.3s ease;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.chat-message.bot {
+    align-self: flex-start;
+    background-color: var(--hsbc-white);
+    border-bottom-left-radius: 5px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.chat-message.user {
+    align-self: flex-end;
+    background-color: var(--hsbc-red);
+    color: var(--hsbc-white);
+    border-bottom-right-radius: 5px;
+}
+
+.chat-message .message-time {
+    font-size: 10px;
+    opacity: 0.7;
+    margin-top: 5px;
+    text-align: right;
+}
+
+.chat-message.typing {
+    display: flex;
+    align-items: center;
+}
+
+.typing-indicator {
+    display: flex;
+    align-items: center;
+}
+
+.typing-indicator span {
+    height: 8px;
+    width: 8px;
+    background-color: #aaa;
+    border-radius: 50%;
+    display: inline-block;
+    margin: 0 2px;
+    animation: typing 1.4s infinite ease-in-out;
+}
+
+.typing-indicator span:nth-child(1) {
+    animation-delay: 0s;
+}
+
+.typing-indicator span:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.typing-indicator span:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+@keyframes typing {
+    0% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-5px);
+    }
+    100% {
+        transform: translateY(0);
+    }
+}
+
+.chat-demo-footer {
+    display: flex;
+    align-items: center;
+    padding: 10px 15px;
+    border-top: 1px solid var(--hsbc-light-gray);
+}
+
+.chat-demo-input {
+    flex: 1;
+    border: none;
+    padding: 10px;
+    border-radius: 20px;
+    background-color: #f0f2f5;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.chat-demo-input:focus {
+    background-color: #e4e6eb;
+}
+
+.chat-demo-send {
+    background-color: var(--hsbc-red);
+    color: var(--hsbc-white);
+    border: none;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    margin-left: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.chat-demo-send:hover {
+    background-color: var(--hsbc-dark-red);
+    transform: scale(1.05);
+}
+
+.chat-demo-send i {
+    font-size: 14px;
+}
+
+/* 聊天消息中的表单样式 */
+.chat-form-option {
+    display: inline-block;
+    margin: 5px;
+    padding: 8px 12px;
+    background-color: #f0f2f5;
+    border-radius: 16px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.chat-form-option:hover {
+    background-color: var(--hsbc-red);
+    color: var(--hsbc-white);
+}
+
+.chat-form-options {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 8px;
+}
+
+.chat-action-button {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 8px 15px;
+    background-color: var(--hsbc-red);
+    color: var(--hsbc-white);
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s ease;
+}
+
+.chat-action-button:hover {
+    background-color: var(--hsbc-dark-red);
+}
+
+/* 自动填充表单字段的高亮效果 */
+.filled-by-chat {
+    background-color: rgba(219, 0, 17, 0.1) !important;
+    border-color: var(--hsbc-red) !important;
+    box-shadow: 0 0 0 3px rgba(219, 0, 17, 0.2) !important;
+    animation: pulse-highlight 2s ease;
+}
+
+@keyframes pulse-highlight {
+    0% {
+        background-color: rgba(219, 0, 17, 0.3) !important;
+    }
+    50% {
+        background-color: rgba(219, 0, 17, 0.1) !important;
+    }
+    100% {
+        background-color: rgba(219, 0, 17, 0.3) !important;
+    }
+} 
