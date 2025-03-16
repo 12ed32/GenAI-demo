@@ -1,0 +1,179 @@
+/* 响应式样式 */
+
+/* 大型设备 (大型桌面, 1200px 及以上) */
+@media (min-width: 1200px) {
+    .container {
+        max-width: 1140px;
+    }
+}
+
+/* 中型设备 (桌面, 992px 及以上) */
+@media (min-width: 992px) and (max-width: 1199.98px) {
+    .hero-title {
+        font-size: 2.5rem;
+    }
+}
+
+/* 小型设备 (平板, 768px 及以上) */
+@media (min-width: 768px) and (max-width: 991.98px) {
+    .hero-title {
+        font-size: 2.2rem;
+    }
+    
+    .hero-section {
+        padding: 4rem 0;
+    }
+    
+    .features-section, 
+    .health-analysis-section, 
+    .risk-assessment-section, 
+    .insurance-recommendation-section, 
+    .contact-section {
+        padding: 4rem 0;
+    }
+    
+    .feature-card {
+        padding: 1.5rem;
+    }
+}
+
+/* 超小型设备 (手机, 576px 及以上) */
+@media (min-width: 576px) and (max-width: 767.98px) {
+    .hero-title {
+        font-size: 2rem;
+    }
+    
+    .hero-subtitle {
+        font-size: 1.1rem;
+    }
+    
+    .hero-section {
+        padding: 3rem 0;
+        text-align: center;
+    }
+    
+    .hero-image {
+        margin-top: 2rem;
+    }
+    
+    .features-section, 
+    .health-analysis-section, 
+    .risk-assessment-section, 
+    .insurance-recommendation-section, 
+    .contact-section {
+        padding: 3rem 0;
+    }
+    
+    .feature-card {
+        margin-bottom: 1.5rem;
+    }
+    
+    .footer {
+        padding: 3rem 0 1.5rem;
+    }
+    
+    .footer-bottom {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .footer-bottom-links {
+        margin-top: 1rem;
+    }
+    
+    .footer-bottom-links a {
+        margin: 0 0.75rem;
+    }
+    
+    /* 聊天窗口响应式样式 */
+    .chat-demo-container {
+        width: 90%;
+        right: 5%;
+        bottom: 70px;
+    }
+}
+
+/* 超小型设备 (小型手机, 小于 576px) */
+@media (max-width: 575.98px) {
+    .hero-title {
+        font-size: 1.8rem;
+    }
+    
+    .hero-subtitle {
+        font-size: 1rem;
+    }
+    
+    .hero-section {
+        padding: 2rem 0;
+        text-align: center;
+    }
+    
+    .hero-image {
+        margin-top: 2rem;
+    }
+    
+    .hero-buttons .btn {
+        display: block;
+        width: 100%;
+        margin-bottom: 1rem;
+    }
+    
+    .features-section, 
+    .health-analysis-section, 
+    .risk-assessment-section, 
+    .insurance-recommendation-section, 
+    .contact-section {
+        padding: 2.5rem 0;
+    }
+    
+    .feature-card {
+        margin-bottom: 1.5rem;
+    }
+    
+    .section-title {
+        font-size: 1.8rem;
+    }
+    
+    .upload-area {
+        padding: 1.5rem;
+    }
+    
+    .footer {
+        padding: 2.5rem 0 1rem;
+        text-align: center;
+    }
+    
+    .footer h5 {
+        margin-top: 1.5rem;
+    }
+    
+    .social-links {
+        justify-content: center;
+        margin-top: 0.5rem;
+    }
+    
+    .footer-bottom {
+        flex-direction: column;
+    }
+    
+    .footer-bottom-links {
+        margin-top: 1rem;
+    }
+    
+    .footer-bottom-links a {
+        margin: 0 0.5rem;
+        font-size: 0.9rem;
+    }
+    
+    /* 聊天窗口响应式样式 */
+    .chat-demo-container {
+        width: 95%;
+        right: 2.5%;
+        bottom: 60px;
+        height: 450px;
+    }
+    
+    .chat-demo-messages {
+        max-height: 250px;
+    }
+} 
