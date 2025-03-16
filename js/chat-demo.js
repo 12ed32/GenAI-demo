@@ -1,884 +1,792 @@
-/**
- * 健康智汇 - 浮动对话演示浮窗
- * 这个脚本用于处理浮动对话窗口的交互和演示内容
- */
-
-document.addEventListener('DOMContentLoaded', function() {
-    // 获取DOM元素
-    const chatLauncher = document.querySelector('.chat-demo-launcher');
-    const chatContainer = document.querySelector('.chat-demo-container');
-    const chatMinimize = document.querySelector('.chat-demo-minimize');
-    const chatClose = document.querySelector('.chat-demo-close');
-    const chatInput = document.querySelector('.chat-demo-input');
-    const chatSend = document.querySelector('.chat-demo-send');
-    const chatMessages = document.querySelector('.chat-demo-messages');
-    
-    // 初始化聊天窗口滚动行为
-    initChatScroll();
-    
-    // 演示对话内容
-    const demoConversation = [
-        {
-            type: 'bot',
-            message: '您好！我是您的智能健康顾问。我可以帮您进行健康评估、风险分析和保险推荐。您想了解什么？',
-            options: ['健康评估', '风险分析', '保险推荐']
-        },
-        {
-            type: 'user',
-            message: '健康评估'
-        },
-        {
-            type: 'bot',
-            message: '很好！为了进行健康评估，我需要了解一些基本信息。您方便分享您的年龄、身高和体重吗？',
-            delay: 1000
-        },
-        {
-            type: 'user',
-            message: '我今年35岁，身高175cm，体重70kg',
-            formData: {
-                'age': '35',
-                'height': '175',
-                'weight': '70',
-                'gender': 'male'
-            },
-            delay: 4500,
-        },
-        {
-            type: 'bot',
-            message: '谢谢您提供的信息。您的BMI指数为22.9，属于正常范围。您最近有进行过体检吗？',
-            delay: 4500,
-            options: ['是的，有体检报告', '没有，最近没体检']
-        },
-        {
-            type: 'user',
-            message: '是的，有体检报告'
-        },
-        {
-            type: 'bot',
-            message: '太好了！您可以上传您的体检报告，我可以为您分析详细的健康状况。或者您也可以手动输入一些关键指标，如血压、血糖等。',
-            delay: 5000,
-            action: {
-                text: '上传体检报告',
-                section: 'health-analysis'
-            }
-        },
-        {
-            type: 'user',
-            message: '我的血压是120/80，血糖是5.2',
-            formData: {
-                'systolic': '120',
-                'diastolic': '80',
-                'bloodSugar': '5.2'
-            },
-            delay: 9000
-        },
-        {
-            type: 'bot',
-            message: '您的血压和血糖都在正常范围内，这很好！为了更全面地评估您的健康风险，我还需要了解一些关于您生活方式的信息。',
-            delay: 5500
-        },
-        {
-            type: 'bot',
-            message: '您是否有吸烟习惯？每周的运动频率如何？',
-            delay: 5000,
-            options: ['不吸烟，经常运动', '偶尔吸烟，适量运动', '经常吸烟，很少运动']
-        },
-        {
-            type: 'user',
-            message: '不吸烟，经常运动',
-            formData: {
-                'smoking-status': 'never',
-                'exercise-frequency': 'active'
-            },
-            delay: 5000,
-        },
-        {
-            type: 'bot',
-            message: '非常好！根据您提供的信息，您的整体健康状况良好，健康风险较低。',
-            delay: 9500
-        },
-        {
-            type: 'bot',
-            message: '基于您的健康状况和生活习惯，我建议您考虑以下保险产品：1. 综合医疗保险 2. 重大疾病保险 3. 意外伤害保险',
-            delay: 6000,
-            action: {
-                text: '查看保险推荐',
-                section: 'insurance-recommendation'
-            }
-        },
-        {
-            type: 'user',
-            message: '我对重大疾病保险比较感兴趣',
-            formData: {
-                'goal-health': true,
-                'age-group': '26-35',
-                'family-status': 'single',
-                'monthly-budget': 'veryHigh',
-                'risk-tolerance': 'medium'
-            },
-            delay: 5000,
-        },
-        {
-            type: 'bot',
-            message: '重大疾病保险是一个很好的选择！考虑到您的年龄和健康状况，我推荐汇丰保险的"康健保"重疾险，它覆盖100多种重大疾病，并提供多次赔付功能。',
-            delay: 5000
-        },
-        {
-            type: 'bot',
-            message: '您希望了解更多关于这款产品的详细信息，还是想与专业顾问进行一对一咨询？',
-            delay: 5000,
-            options: ['了解产品详情', '咨询专业顾问']
-        },
-        {
-            type: 'user',
-            message: '咨询专业顾问'
-        },
-        {
-            type: 'bot',
-            message: '好的，我已为您预约了专业顾问。我们的顾问将在24小时内与您联系，为您提供一对一的专业咨询服务。您还有其他问题吗？',
-            delay: 2000,
-            action: {
-                text: '联系我们',
-                section: 'contact'
-            }
-        }
-    ];
-    
-    // 当前对话索引
-    let currentMessageIndex = 0;
-    // 是否正在自动演示
-    let isAutoDemo = false;
-    // 自动演示的计时器
-    let autoDemoTimer = null;
-    
-    // 打开聊天窗口
-    function openChat() {
-        chatContainer.classList.add('active');
-        // 如果是首次打开，显示第一条消息
-        if (chatMessages.children.length === 0) {
-            addMessage(demoConversation[0]);
-            currentMessageIndex = 1;
+<!DOCTYPE html>
+<html lang="zh-CN" id="advisor-html">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="pageTitle">客户经理仪表盘 - 健康智汇</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <!-- 引入字体图标库 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- 引入Bootstrap框架以提高开发效率和跨平台兼容性 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- 引入国际化支持脚本 -->
+    <script src="js/advisor-i18n.js"></script>
+    <style>
+        /* 客户经理仪表盘专用样式 */
+        .advisor-header {
+            background-color: #333;
+            color: white;
+            padding: 1rem 0;
         }
         
-        // 确保滚动到底部
-        setTimeout(() => {
-            scrollToBottom();
-        }, 100);
-    }
-    
-    // 关闭聊天窗口
-    function closeChat() {
-        chatContainer.classList.remove('active');
-        stopAutoDemo();
-    }
-    
-    // 最小化聊天窗口
-    function minimizeChat() {
-        chatContainer.classList.toggle('minimized');
-    }
-    
-    // 添加消息到聊天窗口
-    function addMessage(messageData) {
-        const messageElement = document.createElement('div');
-        messageElement.classList.add('chat-message', messageData.type);
+        .advisor-header .brand-name {
+            color: white;
+            margin-left: 10px;
+        }
         
-        // 如果是机器人消息且正在输入
-        if (messageData.type === 'bot' && messageData.typing) {
-            messageElement.classList.add('typing');
-            messageElement.innerHTML = `
-                <div class="typing-indicator">
-                    <span></span>
-                    <span></span>
-                    <span></span>
+        .dashboard-container {
+            padding: 2rem 0;
+        }
+        
+        .customer-card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            margin-bottom: 1.5rem;
+        }
+        
+        .customer-header {
+            background-color: var(--hsbc-red);
+            color: white;
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .customer-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background-color: #f5f5f5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: #666;
+            margin: 0 auto 1rem;
+            border: 5px solid white;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+        }
+        
+        .status-badge {
+            background-color: #28a745;
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+        }
+        
+        .customer-actions a {
+            color: white;
+            margin-left: 0.5rem;
+        }
+        
+        .section-title {
+            border-bottom: 2px solid #eee;
+            padding-bottom: 0.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        
+        .metric-card {
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            padding: 1rem;
+            height: 100%;
+        }
+        
+        .metric-card .value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--hsbc-red);
+            margin-bottom: 0.5rem;
+        }
+        
+        .metric-card .label {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 0;
+        }
+        
+        .risk-factor {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.75rem;
+        }
+        
+        .risk-factor i {
+            width: 24px;
+            margin-right: 0.5rem;
+            color: var(--hsbc-red);
+        }
+        
+        .profile-tag {
+            display: inline-block;
+            background-color: #f1f1f1;
+            color: #555;
+            padding: 0.35rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .profile-tag.primary {
+            background-color: #e5f0ff;
+            color: #0066cc;
+        }
+        
+        .profile-tag.secondary {
+            background-color: #f0e5ff;
+            color: #6600cc;
+        }
+        
+        .profile-tag.success {
+            background-color: #e5ffe5;
+            color: #00aa00;
+        }
+        
+        .profile-tag.warning {
+            background-color: #fff5e5;
+            color: #cc7700;
+        }
+        
+        .profile-tag.info {
+            background-color: #e5f5ff;
+            color: #0099cc;
+        }
+        
+        .interest-level {
+            display: flex;
+            align-items: center;
+        }
+        
+        .interest-level .stars {
+            color: #ffc107;
+            margin-left: 0.5rem;
+        }
+        
+        .recommendation-card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .recommendation-card:hover {
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transform: translateY(-3px);
+        }
+        
+        .recommendation-card .match-score {
+            display: inline-block;
+            background-color: #f1f8e9;
+            color: #689f38;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            margin-left: 0.5rem;
+        }
+        
+        .recommendation-card .features {
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        .timeline {
+            list-style: none;
+            padding: 0;
+            position: relative;
+        }
+        
+        .timeline:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 16px;
+            width: 2px;
+            background-color: #ddd;
+        }
+        
+        .timeline li {
+            margin-bottom: 1.5rem;
+            padding-left: 40px;
+            position: relative;
+        }
+        
+        .timeline li .event-icon {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 32px;
+            height: 32px;
+            background-color: white;
+            border: 2px solid var(--hsbc-red);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--hsbc-red);
+        }
+        
+        .timeline li .event-time {
+            font-size: 0.8rem;
+            color: #999;
+            margin-bottom: 0.25rem;
+        }
+        
+        .timeline li .event-title {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+        
+        .timeline li .event-desc {
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        .action-card {
+            background-color: #f9f9f9;
+            border-left: 4px solid var(--hsbc-red);
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 0 4px 4px 0;
+        }
+        
+        .action-card .action-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .action-card .action-desc {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 0.5rem;
+        }
+        
+        .chart-container {
+            height: 250px;
+        }
+    </style>
+</head>
+<body>
+    <!-- 头部导航 -->
+    <header class="advisor-header">
+        <div class="container">
+            <nav class="navbar navbar-expand-lg navbar-dark">
+                <div class="container-fluid">
+                    <a class="navbar-brand" href="#">
+                        <img src="images/tc-hsbc-logo-2.svg" alt="汇丰保险" class="logo" style="filter: brightness(10);">
+                        <span class="brand-name" data-i18n="brandName">健康智汇 - 客户经理平台</span>
+                    </a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarNav">
+                        <ul class="navbar-nav ms-auto">
+                            <li class="nav-item">
+                                <a class="nav-link active" href="#">
+                                    <i class="fas fa-home me-1"></i><span data-i18n="home">首页</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">
+                                    <i class="fas fa-users me-1"></i><span data-i18n="customerManagement">客户管理</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">
+                                    <i class="fas fa-calendar-alt me-1"></i><span data-i18n="appointmentManagement">预约管理</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">
+                                    <i class="fas fa-chart-bar me-1"></i><span data-i18n="performanceReport">业绩报表</span>
+                                </a>
+                            </li>
+                            <!-- 语言切换下拉菜单 -->
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                                    <i class="fas fa-globe me-1"></i><span class="current-language">简体中文</span>
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end language-menu">
+                                    <li><a class="dropdown-item" href="#" data-lang="zh-CN">简体中文</a></li>
+                                    <li><a class="dropdown-item" href="#" data-lang="zh-TW">繁體中文</a></li>
+                                    <li><a class="dropdown-item" href="#" data-lang="en-US">English</a></li>
+                                </ul>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                                    <i class="fas fa-user-circle me-1"></i><span data-i18n="manager">张经理</span>
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end">
+                                    <li><a class="dropdown-item" href="#" data-i18n="profile">个人资料</a></li>
+                                    <li><a class="dropdown-item" href="#" data-i18n="settings">设置</a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item" href="#" data-i18n="logout">退出登录</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
-            `;
-        } else {
-            // 普通消息
-            messageElement.innerHTML = `
-                <div class="message-content">${messageData.message}</div>
-                <div class="message-time">${getCurrentTime()}</div>
-            `;
+            </nav>
+        </div>
+    </header>
+
+    <!-- 主要内容区域 -->
+    <section class="dashboard-container">
+        <div class="container">
+            <!-- 面包屑导航 -->
+            <nav aria-label="breadcrumb" class="mb-4">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="#" data-i18n="breadcrumbHome">首页</a></li>
+                    <li class="breadcrumb-item"><a href="#" data-i18n="breadcrumbCustomerManagement">客户管理</a></li>
+                    <li class="breadcrumb-item active" aria-current="page" data-i18n="breadcrumbCustomerDetail">客户详情</li>
+                </ol>
+            </nav>
             
-            // 如果有选项，添加选项按钮
-            if (messageData.options && messageData.options.length > 0) {
-                const optionsContainer = document.createElement('div');
-                optionsContainer.classList.add('chat-form-options');
+            <!-- 客户信息卡片 -->
+            <div class="customer-card">
+                <div class="customer-header">
+                    <div>
+                        <h3>王小明 <span class="status-badge" data-i18n="highValueCustomer">高价值客户</span></h3>
+                        <p class="mb-0"><span data-i18n="customerId">客户ID</span>: C1000567 | <span data-i18n="registrationTime">注册时间</span>: 2023-03-15</p>
+                    </div>
+                    <div class="customer-actions">
+                        <a href="#" class="btn btn-sm btn-outline-light">
+                            <i class="fas fa-phone-alt me-1"></i><span data-i18n="contactCustomer">联系客户</span>
+                        </a>
+                        <a href="#" class="btn btn-sm btn-outline-light">
+                            <i class="fas fa-envelope me-1"></i><span data-i18n="sendMessage">发送消息</span>
+                        </a>
+                        <a href="#" class="btn btn-sm btn-outline-light">
+                            <i class="fas fa-calendar-plus me-1"></i><span data-i18n="scheduleConsultation">预约咨询</span>
+                        </a>
+                    </div>
+                </div>
                 
-                messageData.options.forEach(option => {
-                    const optionElement = document.createElement('div');
-                    optionElement.classList.add('chat-form-option');
-                    optionElement.textContent = option;
-                    
-                    // 为选项添加数据属性，用于识别特殊选项
-                    if (option === '健康评估') {
-                        optionElement.setAttribute('data-option-type', 'health-assessment');
-                    } else if (option === '风险分析') {
-                        optionElement.setAttribute('data-option-type', 'risk-analysis');
-                    } else if (option === '保险推荐') {
-                        optionElement.setAttribute('data-option-type', 'insurance-recommendation');
-                    }
-                    
-                    optionElement.addEventListener('click', () => {
-                        // 添加用户选择的选项作为用户消息
-                        addMessage({
-                            type: 'user',
-                            message: option
-                        });
-                        
-                        // 强制滚动到底部
-                        scrollToBottom();
-                        
-                        // 处理特殊选项的点击
-                        handleSpecialOptionClick(option);
-                        
-                        // 查找下一条机器人消息
-                        const nextBotMessage = findNextBotMessage(option);
-                        if (nextBotMessage) {
-                            // 显示机器人正在输入
-                            showTyping();
-                            // 强制滚动到底部
-                            scrollToBottom();
+                <div class="customer-body p-4">
+                    <div class="row">
+                        <div class="col-md-3 text-center mb-4">
+                            <div class="customer-avatar">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <h5>王小明</h5>
+                            <p class="text-muted mb-1">35<span data-i18n="age">岁</span> | <span data-i18n="male">男</span></p>
+                            <p class="text-muted mb-3" data-i18n="location">上海市浦东新区</p>
                             
-                            // 延迟后显示机器人回复
-                            setTimeout(() => {
-                                removeTyping();
-                                addMessage(nextBotMessage);
+                            <div class="contact-info">
+                                <p class="mb-1"><i class="fas fa-phone-alt me-2"></i>138****1234</p>
+                                <p class="mb-1"><i class="fas fa-envelope me-2"></i>wang****@example.com</p>
+                                <p class="mb-1"><i class="fab fa-weixin me-2"></i>WXM_2023</p>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-9">
+                            <h4 class="section-title" data-i18n="healthDataSummary">健康数据摘要</h4>
+                            <div class="row mb-4">
+                                <div class="col-md-3 mb-3">
+                                    <div class="metric-card">
+                                        <div class="value">85</div>
+                                        <p class="label" data-i18n="healthScore">健康评分</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 mb-3">
+                                    <div class="metric-card">
+                                        <div class="value">23.5</div>
+                                        <p class="label" data-i18n="bmiIndex">BMI指数</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 mb-3">
+                                    <div class="metric-card">
+                                        <div class="value">118/78</div>
+                                        <p class="label" data-i18n="bloodPressure">血压 (mmHg)</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 mb-3">
+                                    <div class="metric-card">
+                                        <div class="value">5.4</div>
+                                        <p class="label" data-i18n="bloodSugar">血糖 (mmol/L)</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <h4 class="section-title" data-i18n="riskAssessmentResults">风险评估结果</h4>
+                            <div class="row mb-4">
+                                <div class="col-md-6">
+                                    <div class="risk-score d-flex align-items-center mb-3">
+                                        <div class="chart-container me-3" style="width: 100px; height: 100px;">
+                                            <canvas id="riskDonut"></canvas>
+                                        </div>
+                                        <div>
+                                            <h5><span data-i18n="riskScore">风险评分</span>: 32</h5>
+                                            <span class="badge bg-warning" data-i18n="mediumRisk">中等风险</span>
+                                            <p class="text-muted mt-1 mb-0" data-i18n="higherThanAverage">高于同龄人群平均水平15%</p>
+                                        </div>
+                                    </div>
+                                    
+                                    <h6 class="mt-3" data-i18n="mainRiskFactors">主要风险因素:</h6>
+                                    <div class="risk-factors mt-2">
+                                        <div class="risk-factor">
+                                            <i class="fas fa-dna"></i>
+                                            <span data-i18n="familyHeartHistory">家族心脏病史</span>
+                                        </div>
+                                        <div class="risk-factor">
+                                            <i class="fas fa-smoking"></i>
+                                            <span data-i18n="occasionalSmoking">偶尔吸烟</span>
+                                        </div>
+                                        <div class="risk-factor">
+                                            <i class="fas fa-running"></i>
+                                            <span data-i18n="lightExerciseDeficiency">轻度运动不足</span>
+                                        </div>
+                                    </div>
+                                </div>
                                 
-                                // 强制滚动到底部
-                                scrollToBottom();
+                                <div class="col-md-6">
+                                    <h6 data-i18n="preventionSuggestions">预防建议:</h6>
+                                    <ul class="prevention-tips">
+                                        <li data-i18n="monitorBloodPressure">定期监测血压，减少盐分摄入，增加有氧运动</li>
+                                        <li data-i18n="quitSmoking">完全戒烟，避免被动吸烟</li>
+                                        <li data-i18n="weeklyExercise">每周进行至少150分钟的中等强度有氧运动</li>
+                                        <li data-i18n="healthyDiet">保持健康饮食，增加蔬果摄入</li>
+                                        <li data-i18n="annualCheckup">每年进行一次全面体检</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 客户画像与推荐 -->
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="customer-card">
+                        <div class="p-4">
+                            <h4 class="section-title" data-i18n="customerProfile">客户画像</h4>
+                            
+                            <div class="profile-section mb-4">
+                                <h6 data-i18n="familySituation">家庭情况</h6>
+                                <div class="profile-tags mb-3">
+                                    <span class="profile-tag primary" data-i18n="married">已婚</span>
+                                    <span class="profile-tag primary" data-i18n="oneChild">1子女 (8岁)</span>
+                                    <span class="profile-tag primary" data-i18n="dualIncomeFamily">双职工家庭</span>
+                                    <span class="profile-tag primary" data-i18n="mortgageInProgress">住房贷款中</span>
+                                </div>
                                 
-                                // 如果有下一条消息，继续自动演示
-                                if (isAutoDemo) {
-                                    continueAutoDemo();
-                                }
-                            }, nextBotMessage.delay || 1000);
+                                <h6 data-i18n="occupationAndIncome">职业与收入</h6>
+                                <div class="profile-tags mb-3">
+                                    <span class="profile-tag secondary" data-i18n="itIndustry">IT行业</span>
+                                    <span class="profile-tag secondary" data-i18n="middleManagement">中层管理</span>
+                                    <span class="profile-tag secondary" data-i18n="annualIncome">年收入30-50万</span>
+                                    <span class="profile-tag secondary" data-i18n="highEducation">高学历</span>
+                                </div>
+                                
+                                <h6 data-i18n="lifestyle">生活方式</h6>
+                                <div class="profile-tags mb-3">
+                                    <span class="profile-tag success" data-i18n="healthConscious">关注健康</span>
+                                    <span class="profile-tag warning" data-i18n="highWorkPressure">工作压力大</span>
+                                    <span class="profile-tag info" data-i18n="focusOnChildEducation">注重子女教育</span>
+                                    <span class="profile-tag" data-i18n="travelEnthusiast">旅行爱好者</span>
+                                </div>
+                                
+                                <h6 data-i18n="financialGoals">财务目标</h6>
+                                <div class="profile-tags mb-3">
+                                    <span class="profile-tag info" data-i18n="childEducationPlanning">子女教育规划</span>
+                                    <span class="profile-tag info" data-i18n="retirementPreparation">退休养老准备</span>
+                                    <span class="profile-tag warning" data-i18n="healthMedicalProtection">健康医疗保障</span>
+                                    <span class="profile-tag success" data-i18n="wealthGrowth">财富稳健增长</span>
+                                </div>
+                            </div>
+                            
+                            <h4 class="section-title" data-i18n="behaviorAnalysis">行为分析</h4>
+                            <div class="row mb-4">
+                                <div class="col-md-12">
+                                    <div class="chart-container">
+                                        <canvas id="behaviorChart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <h4 class="section-title" data-i18n="interactionHistory">互动历史</h4>
+                            <ul class="timeline">
+                                <li>
+                                    <div class="event-icon">
+                                        <i class="fas fa-file-alt"></i>
+                                    </div>
+                                    <div class="event-time">2023-05-18 09:32</div>
+                                    <div class="event-title" data-i18n="completedHealthRiskAssessment">完成健康风险评估</div>
+                                    <div class="event-desc" data-i18n="completedAssessmentDesc">用户完成了全部健康风险评估问卷，风险评分为32分（中等风险）</div>
+                                </li>
+                                <li>
+                                    <div class="event-icon">
+                                        <i class="fas fa-search"></i>
+                                    </div>
+                                    <div class="event-time">2023-05-15 16:45</div>
+                                    <div class="event-title" data-i18n="browsedCriticalIllnessProducts">浏览重疾保险产品</div>
+                                    <div class="event-desc" data-i18n="browsedProductsDesc">用户浏览了3款重疾保险产品详情，停留时间共计8分钟</div>
+                                </li>
+                                <li>
+                                    <div class="event-icon">
+                                        <i class="fas fa-upload"></i>
+                                    </div>
+                                    <div class="event-time">2023-05-10 14:20</div>
+                                    <div class="event-title" data-i18n="uploadedHealthData">上传健康数据</div>
+                                    <div class="event-desc" data-i18n="uploadedHealthDataDesc">用户上传了最新的体检报告，健康评分为85分</div>
+                                </li>
+                                <li>
+                                    <div class="event-icon">
+                                        <i class="fas fa-user-plus"></i>
+                                    </div>
+                                    <div class="event-time">2023-03-15 10:05</div>
+                                    <div class="event-title" data-i18n="registeredAccount">注册账号</div>
+                                    <div class="event-desc" data-i18n="registeredAccountDesc">用户注册成功并完成了基本信息填写</div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6">
+                    <div class="customer-card">
+                        <div class="p-4">
+                            <h4 class="section-title" data-i18n="insuranceRecommendation">保险推荐</h4>
+                            
+                            <div class="interest-section mb-4">
+                                <h6 data-i18n="userInterestedInsuranceCategories">用户关注的保险类别</h6>
+                                <div class="d-flex flex-wrap">
+                                    <div class="interest-level me-4 mb-3">
+                                        <span data-i18n="criticalIllnessInsurance">重疾保险:</span>
+                                        <div class="stars">
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="far fa-star"></i>
+                                        </div>
+                                    </div>
+                                    <div class="interest-level me-4 mb-3">
+                                        <span data-i18n="educationInsurance">教育金保险:</span>
+                                        <div class="stars">
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="far fa-star"></i>
+                                            <i class="far fa-star"></i>
+                                        </div>
+                                    </div>
+                                    <div class="interest-level me-4 mb-3">
+                                        <span data-i18n="medicalInsurance">医疗保险:</span>
+                                        <div class="stars">
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="far fa-star"></i>
+                                        </div>
+                                    </div>
+                                    <div class="interest-level me-4 mb-3">
+                                        <span data-i18n="annuityInsurance">年金保险:</span>
+                                        <div class="stars">
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="far fa-star"></i>
+                                            <i class="far fa-star"></i>
+                                            <i class="far fa-star"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="recommendations mb-4">
+                                <h6 data-i18n="personalizedRecommendedProducts">个性化推荐产品</h6>
+                                
+                                <div class="recommendation-card">
+                                    <h5>
+                                        <span data-i18n="premiumCriticalIllnessInsurance">尊享e生重疾保险</span>
+                                        <span class="match-score" data-i18n="bestMatch">最佳匹配</span>
+                                    </h5>
+                                    <p class="mb-2" data-i18n="comprehensiveCoverage">全面覆盖100种重大疾病，保费稳定，终身保障，适合希望获得全面重疾保障的客户</p>
+                                    <div class="features">
+                                        <div class="mb-1"><strong data-i18n="monthlyPremium">月保费:</strong> 600-800元</div>
+                                        <div class="mb-1"><strong data-i18n="recommendationReason">推荐理由:</strong> <span data-i18n="criticalIllnessRecommendationReason">基于客户家族病史和健康风险评估结果，提供全面重疾保障，满足客户健康保障需求</span></div>
+                                        <div><strong data-i18n="specialHighlight">特别亮点:</strong> <span data-i18n="criticalIllnessHighlight">含轻症保障，多次赔付设计，契合客户健康关注点</span></div>
+                                    </div>
+                                </div>
+                                
+                                <div class="recommendation-card">
+                                    <h5>
+                                        <span data-i18n="excellentEducationInsurance">优学教育金保险</span>
+                                        <span class="match-score" data-i18n="recommended">推荐</span>
+                                    </h5>
+                                    <p class="mb-2" data-i18n="educationInsuranceDesc">专为子女教育规划设计，在子女关键教育阶段提供教育金给付，兼具保障和储蓄功能</p>
+                                    <div class="features">
+                                        <div class="mb-1"><strong data-i18n="monthlyPremium">月保费:</strong> 1000-1500元</div>
+                                        <div class="mb-1"><strong data-i18n="recommendationReason">推荐理由:</strong> <span data-i18n="educationRecommendationReason">客户有8岁子女，关注子女教育规划，该产品可满足未来教育资金需求</span></div>
+                                        <div><strong data-i18n="specialHighlight">特别亮点:</strong> <span data-i18n="educationHighlight">教育金分阶段给付，可灵活应对不同教育阶段的资金需求</span></div>
+                                    </div>
+                                </div>
+                                
+                                <div class="recommendation-card">
+                                    <h5>
+                                        <span data-i18n="comfortMedicalInsurance">安心医疗保险</span>
+                                        <span class="match-score" data-i18n="recommended">推荐</span>
+                                    </h5>
+                                    <p class="mb-2" data-i18n="medicalInsuranceDesc">高端医疗保险，提供百万医疗保障，覆盖住院、手术、特殊门诊等医疗费用</p>
+                                    <div class="features">
+                                        <div class="mb-1"><strong data-i18n="monthlyPremium">月保费:</strong> 300-500元</div>
+                                        <div class="mb-1"><strong data-i18n="recommendationReason">推荐理由:</strong> <span data-i18n="medicalRecommendationReason">补充客户基本医保，提供更全面的医疗保障，减轻潜在医疗负担</span></div>
+                                        <div><strong data-i18n="specialHighlight">特别亮点:</strong> <span data-i18n="medicalHighlight">含国内外知名医院直付服务，免除客户垫付压力</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <h4 class="section-title" data-i18n="recommendedFollowUpActions">推荐跟进行动</h4>
+                            <div class="action-cards">
+                                <div class="action-card">
+                                    <div class="action-title">
+                                        <i class="fas fa-calendar-alt me-2"></i><span data-i18n="scheduleProductIntroMeeting">预约产品介绍会议</span>
+                                    </div>
+                                    <div class="action-desc" data-i18n="scheduleProductIntroDesc">客户近期频繁浏览重疾保险产品，建议尽快联系客户预约线上或线下会议，介绍尊享e生重疾保险产品详情。</div>
+                                    <a href="#" class="btn btn-sm btn-hsbc" data-i18n="scheduleAppointment">安排预约</a>
+                                </div>
+                                
+                                <div class="action-card">
+                                    <div class="action-title">
+                                        <i class="fas fa-file-alt me-2"></i><span data-i18n="sendChildEducationPlan">发送子女教育规划方案</span>
+                                    </div>
+                                    <div class="action-desc" data-i18n="sendChildEducationPlanDesc">根据客户子女年龄和教育需求，准备个性化的教育金规划方案，结合优学教育金保险产品，帮助客户理解长期教育规划的重要性。</div>
+                                    <a href="#" class="btn btn-sm btn-hsbc" data-i18n="preparePlan">准备方案</a>
+                                </div>
+                                
+                                <div class="action-card">
+                                    <div class="action-title">
+                                        <i class="fas fa-user-friends me-2"></i><span data-i18n="familyProtectionPlanAssessment">全家保障方案评估</span>
+                                    </div>
+                                    <div class="action-desc" data-i18n="familyProtectionPlanDesc">客户是家庭支柱，建议进行全家保障需求评估，制定家庭整体保险保障方案，包括配偶和子女的保险规划。</div>
+                                    <a href="#" class="btn btn-sm btn-hsbc" data-i18n="arrangeAssessment">安排评估</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <p class="mb-0" data-i18n="copyright">© 2023 汇丰保险 版权所有</p>
+                </div>
+                <div class="col-md-6 text-end">
+                    <p class="mb-0"><span data-i18n="advisorPlatform">客户经理平台</span> <span data-i18n="version">v2.5.0</span> | <a href="#" class="text-white" data-i18n="reportIssue">反馈问题</a></p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JS依赖 -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 风险评分图表
+            const riskCtx = document.getElementById('riskDonut').getContext('2d');
+            const riskChart = new Chart(riskCtx, {
+                type: 'doughnut',
+                data: {
+                    datasets: [{
+                        data: [32, 68],
+                        backgroundColor: [
+                            '#ffc107',
+                            '#f5f5f5'
+                        ],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    cutout: '70%',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        tooltip: {
+                            enabled: false
+                        },
+                        legend: {
+                            display: false
                         }
-                    });
-                    optionsContainer.appendChild(optionElement);
-                });
-                
-                messageElement.appendChild(optionsContainer);
-            }
-            
-            // 如果有操作按钮，添加操作按钮
-            if (messageData.action) {
-                const actionButton = document.createElement('div');
-                actionButton.classList.add('chat-action-button');
-                actionButton.textContent = messageData.action.text;
-                actionButton.addEventListener('click', () => {
-                    // 滚动到指定部分
-                    const section = document.getElementById(messageData.action.section);
-                    if (section) {
-                        section.scrollIntoView({ behavior: 'smooth' });
-                    }
-                });
-                messageElement.appendChild(actionButton);
-            }
-            
-            // 如果是用户消息且包含表单数据，自动填充相应表单
-            if (messageData.type === 'user' && messageData.formData) {
-                // 延迟填充表单，确保DOM已完全更新
-                setTimeout(() => {
-                    fillFormData(messageData.formData);
-                }, 200);
-            }
-        }
-        
-        chatMessages.appendChild(messageElement);
-        
-        // 滚动到底部
-        scrollToBottom();
-    }
-    
-    // 处理特殊选项的点击
-    function handleSpecialOptionClick(option) {
-        // 根据选项类型执行相应操作
-        if (option === '健康评估') {
-            // 点击页面上的健康评估按钮
-            setTimeout(() => {
-                const healthAssessmentBtn = document.querySelector('.health-assessment-btn, #health-assessment-btn, [data-action="health-assessment"]');
-                if (healthAssessmentBtn) {
-                    healthAssessmentBtn.click();
-                    console.log('点击健康评估按钮');
-                } else if (window.jQuery) {
-                    // 尝试使用jQuery查找按钮
-                    const $btn = window.jQuery('button:contains("健康评估"), button:contains("分析数据")');
-                    if ($btn.length > 0) {
-                        $btn[0].click();
-                        console.log('使用jQuery点击健康评估按钮');
-                    }
-                } else {
-                    // 尝试使用文本内容查找按钮
-                    findAndClickButtonByText(['健康评估', '分析数据', '评估', '分析']);
-                }
-                
-                // 滚动到健康评估部分
-                const healthSection = document.getElementById('health-analysis');
-                if (healthSection) {
-                    healthSection.scrollIntoView({ behavior: 'smooth' });
-                }
-            }, 300);
-        } else if (option === '风险分析') {
-            // 点击页面上的风险分析按钮
-            setTimeout(() => {
-                const riskAnalysisBtn = document.querySelector('.risk-analysis-btn, #risk-analysis-btn, [data-action="risk-analysis"]');
-                if (riskAnalysisBtn) {
-                    riskAnalysisBtn.click();
-                    console.log('点击风险分析按钮');
-                } else if (window.jQuery) {
-                    // 尝试使用jQuery查找按钮
-                    const $btn = window.jQuery('button:contains("风险分析"), button:contains("评估风险")');
-                    if ($btn.length > 0) {
-                        $btn[0].click();
-                        console.log('使用jQuery点击风险分析按钮');
-                    }
-                } else {
-                    // 尝试使用文本内容查找按钮
-                    findAndClickButtonByText(['风险分析', '评估风险', '风险', '评估']);
-                }
-                
-                // 滚动到风险分析部分
-                const riskSection = document.getElementById('risk-assessment');
-                if (riskSection) {
-                    riskSection.scrollIntoView({ behavior: 'smooth' });
-                }
-            }, 300);
-        } else if (option === '保险推荐') {
-            // 点击页面上的保险推荐按钮
-            setTimeout(() => {
-                const insuranceRecommendationBtn = document.querySelector('.insurance-recommendation-btn, #insurance-recommendation-btn, [data-action="insurance-recommendation"]');
-                if (insuranceRecommendationBtn) {
-                    insuranceRecommendationBtn.click();
-                    console.log('点击保险推荐按钮');
-                } else if (window.jQuery) {
-                    // 尝试使用jQuery查找按钮
-                    const $btn = window.jQuery('button:contains("保险推荐"), button:contains("获取推荐")');
-                    if ($btn.length > 0) {
-                        $btn[0].click();
-                        console.log('使用jQuery点击保险推荐按钮');
-                    }
-                } else {
-                    // 尝试使用文本内容查找按钮
-                    findAndClickButtonByText(['保险推荐', '获取推荐', '保险', '推荐']);
-                }
-                
-                // 滚动到保险推荐部分
-                const insuranceSection = document.getElementById('insurance-recommendation');
-                if (insuranceSection) {
-                    insuranceSection.scrollIntoView({ behavior: 'smooth' });
-                }
-            }, 300);
-        }
-    }
-    
-    // 滚动聊天窗口到底部
-    function scrollToBottom() {
-        // 检查聊天消息容器是否存在
-        if (!chatMessages) {
-            console.error('聊天消息容器不存在');
-            return;
-        }
-        
-        // 确保聊天容器有正确的样式设置
-        chatMessages.style.overflowY = 'auto';
-        chatMessages.style.maxHeight = '300px'; // 设置最大高度确保可滚动
-        
-        // 立即滚动到底部
-        chatMessages.scrollTop = chatMessages.scrollHeight;
-        
-        // 使用 requestAnimationFrame 确保在下一帧渲染前滚动到底部
-        requestAnimationFrame(() => {
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-        });
-        
-        // 额外的延迟滚动，确保在DOM完全更新后滚动到底部
-        setTimeout(() => {
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-        }, 100);
-    }
-    
-    // 自动填充表单数据
-    function fillFormData(formData) {
-        // 遍历表单数据
-        for (const [id, value] of Object.entries(formData)) {
-            const element = document.getElementById(id);
-            if (element) {
-                // 根据元素类型设置值
-                if (element.type === 'checkbox') {
-                    element.checked = value;
-                } else if (element.type === 'select-one') {
-                    element.value = value;
-                } else {
-                    element.value = value;
-                }
-                
-                // 触发change事件，以便其他可能的监听器能够响应
-                const event = new Event('change', { bubbles: true });
-                element.dispatchEvent(event);
-                
-                // 如果是健康分析表单中的字段，高亮显示已填充的字段
-                highlightField(element);
-            }
-        }
-        
-        // 检查是否需要触发评估按钮
-        triggerEvaluationButtons(formData);
-    }
-    
-    // 触发评估按钮
-    function triggerEvaluationButtons(formData) {
-        // 根据填充的表单数据决定触发哪个评估按钮
-        
-        // 健康评估按钮
-        if (formData['age'] || formData['height'] || formData['weight'] || 
-            formData['systolic'] || formData['diastolic'] || formData['bloodSugar']) {
-            // 尝试多种可能的选择器来找到健康评估按钮
-            const healthEvalBtnSelectors = [
-                '#health-data-form button'
-            ];
-            
-            setTimeout(() => {
-                let healthEvalBtn = null;
-                
-                // 尝试所有可能的选择器
-                for (const selector of healthEvalBtnSelectors) {
-                    const btn = document.querySelector(selector);
-                    if (btn) {
-                        healthEvalBtn = btn;
-                        break;
                     }
                 }
-                
-                // 如果找到按钮，点击它
-                if (healthEvalBtn) {
-                    healthEvalBtn.click();
-                    console.log('触发健康评估按钮');
-                } else {
-                    // 如果没有找到按钮，尝试使用jQuery选择器（如果jQuery可用）
-                    if (window.jQuery) {
-                        const $btn = window.jQuery('button:contains("健康评估"), button:contains("分析数据"), .btn:contains("健康评估"), .btn:contains("分析数据")');
-                        if ($btn.length > 0) {
-                            $btn[0].click();
-                            console.log('使用jQuery触发健康评估按钮');
-                        }
-                    } else {
-                        // 尝试使用文本内容查找按钮
-                        findAndClickButtonByText(['健康评估', '分析数据', '评估', '分析']);
-                    }
-                }
-            }, 500);
-        }
-        
-        // 风险评估按钮
-        if (formData['smoking-status'] || formData['exercise-frequency']) {
-            // 尝试多种可能的选择器来找到风险评估按钮
-            const riskEvalBtnSelectors = [
-                '#risk-assessment-form button'
-            ];
-            
-            setTimeout(() => {
-                let riskEvalBtn = null;
-                
-                // 尝试所有可能的选择器
-                for (const selector of riskEvalBtnSelectors) {
-                    const btn = document.querySelector(selector);
-                    if (btn) {
-                        riskEvalBtn = btn;
-                        break;
-                    }
-                }
-                
-                // 如果找到按钮，点击它
-                if (riskEvalBtn) {
-                    riskEvalBtn.click();
-                    console.log('触发风险评估按钮');
-                } else {
-                    // 如果没有找到按钮，尝试使用jQuery选择器（如果jQuery可用）
-                    if (window.jQuery) {
-                        const $btn = window.jQuery('button:contains("风险分析"), button:contains("评估风险"), .btn:contains("风险分析"), .btn:contains("评估风险")');
-                        if ($btn.length > 0) {
-                            $btn[0].click();
-                            console.log('使用jQuery触发风险评估按钮');
-                        }
-                    } else {
-                        // 尝试使用文本内容查找按钮
-                        findAndClickButtonByText(['风险分析', '评估风险', '风险', '评估']);
-                    }
-                }
-            }, 500);
-        }
-        
-        // 保险推荐按钮
-        if (formData['goal-health'] || formData['age-group'] || formData['family-status']) {
-            // 尝试多种可能的选择器来找到保险推荐按钮
-            const insuranceEvalBtnSelectors = [
-                '#insurance-recommendation-form button'
-            ];
-            
-            setTimeout(() => {
-                let insuranceEvalBtn = null;
-                
-                // 尝试所有可能的选择器
-                for (const selector of insuranceEvalBtnSelectors) {
-                    const btn = document.querySelector(selector);
-                    if (btn) {
-                        insuranceEvalBtn = btn;
-                        break;
-                    }
-                }
-                
-                // 如果找到按钮，点击它
-                if (insuranceEvalBtn) {
-                    insuranceEvalBtn.click();
-                    console.log('触发保险推荐按钮');
-                } else {
-                    // 如果没有找到按钮，尝试使用jQuery选择器（如果jQuery可用）
-                    if (window.jQuery) {
-                        const $btn = window.jQuery('button:contains("保险推荐"), button:contains("获取推荐"), .btn:contains("保险推荐"), .btn:contains("获取推荐")');
-                        if ($btn.length > 0) {
-                            $btn[0].click();
-                            console.log('使用jQuery触发保险推荐按钮');
-                        }
-                    } else {
-                        // 尝试使用文本内容查找按钮
-                        findAndClickButtonByText(['保险推荐', '获取推荐', '保险', '推荐']);
-                    }
-                }
-            }, 500);
-        }
-    }
-    
-    // 通过文本内容查找并点击按钮
-    function findAndClickButtonByText(textOptions) {
-        // 获取所有可能是按钮的元素
-        const buttonElements = document.querySelectorAll('button, .btn, [type="button"], [role="button"], .button, input[type="submit"], a.btn, a.button');
-        
-        // 遍历所有可能的文本选项
-        for (const text of textOptions) {
-            // 遍历所有可能的按钮元素
-            for (const button of buttonElements) {
-                // 检查按钮文本是否包含指定文本
-                if (button.textContent.includes(text)) {
-                    // 点击按钮
-                    button.click();
-                    console.log(`通过文本内容"${text}"找到并点击按钮`);
-                    return true;
-                }
-            }
-        }
-        
-        return false;
-    }
-    
-    // 高亮显示已填充的字段
-    function highlightField(element) {
-        // 添加高亮效果
-        element.classList.add('filled-by-chat');
-        
-        // 获取表单容器
-        let formContainer = null;
-        let sectionId = null;
-        
-        // 如果是健康分析表单，自动切换到相应的标签页
-        if (element.closest('#health-data-form')) {
-            formContainer = document.getElementById('health-data-form');
-            sectionId = 'health-analysis';
-            const manualTab = document.getElementById('manual-tab');
-            if (manualTab) {
-                manualTab.click();
-            }
-        } else if (element.closest('#risk-assessment-form')) {
-            // 如果是风险评估表单，滚动到风险评估部分
-            formContainer = document.getElementById('risk-assessment-form');
-            sectionId = 'risk-assessment';
-        } else if (element.closest('#insurance-recommendation-form')) {
-            // 如果是保险推荐表单，滚动到保险推荐部分
-            formContainer = document.getElementById('insurance-recommendation-form');
-            sectionId = 'insurance-recommendation';
-        }
-        
-        // 滚动到相应部分
-        if (sectionId) {
-            const section = document.getElementById(sectionId);
-            if (section) {
-                section.scrollIntoView({ behavior: 'smooth' });
-                
-                // 确保表单在视图中
-                if (formContainer) {
-                    setTimeout(() => {
-                        formContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    }, 300);
-                }
-            }
-        }
-        
-        // 2秒后移除高亮效果
-        setTimeout(() => {
-            element.classList.remove('filled-by-chat');
-        }, 2000);
-    }
-    
-    // 显示机器人正在输入
-    function showTyping() {
-        addMessage({
-            type: 'bot',
-            typing: true
-        });
-        
-        // 确保滚动到底部
-        scrollToBottom();
-    }
-    
-    // 移除机器人正在输入的提示
-    function removeTyping() {
-        const typingElements = chatMessages.querySelectorAll('.chat-message.typing');
-        typingElements.forEach(element => {
-            element.remove();
-        });
-        
-        // 确保滚动到底部
-        scrollToBottom();
-    }
-    
-    // 获取当前时间
-    function getCurrentTime() {
-        const now = new Date();
-        let hours = now.getHours();
-        let minutes = now.getMinutes();
-        
-        // 补零
-        hours = hours < 10 ? '0' + hours : hours;
-        minutes = minutes < 10 ? '0' + minutes : minutes;
-        
-        return `${hours}:${minutes}`;
-    }
-    
-    // 根据用户选择查找下一条机器人消息
-    function findNextBotMessage(userOption) {
-        // 在这个简化版本中，我们只是按顺序返回下一条机器人消息
-        // 在实际应用中，可以根据用户选择的选项来决定返回哪条消息
-        for (let i = currentMessageIndex; i < demoConversation.length; i++) {
-            if (demoConversation[i].type === 'bot') {
-                currentMessageIndex = i + 1;
-                return demoConversation[i];
-            }
-        }
-        return null;
-    }
-    
-    // 发送用户消息
-    function sendUserMessage() {
-        const message = chatInput.value.trim();
-        if (message) {
-            // 添加用户消息
-            addMessage({
-                type: 'user',
-                message: message
             });
             
-            // 清空输入框
-            chatInput.value = '';
-            
-            // 显示机器人正在输入
-            showTyping();
-            
-            // 强制滚动到底部
-            scrollToBottom();
-            
-            // 延迟后显示机器人回复
-            setTimeout(() => {
-                removeTyping();
-                
-                // 获取下一条机器人消息
-                const nextBotMessage = findNextBotMessage();
-                if (nextBotMessage) {
-                    addMessage(nextBotMessage);
-                    
-                    // 强制滚动到底部
-                    scrollToBottom();
-                    
-                    // 如果有下一条消息，继续自动演示
-                    if (isAutoDemo) {
-                        continueAutoDemo();
-                    }
-                }
-            }, 1000);
-        }
-    }
-    
-    // 开始自动演示
-    function startAutoDemo() {
-        isAutoDemo = true;
-        continueAutoDemo();
-    }
-    
-    // 继续自动演示
-    function continueAutoDemo() {
-        if (!isAutoDemo) return;
-        
-        // 清除之前的计时器
-        if (autoDemoTimer) {
-            clearTimeout(autoDemoTimer);
-        }
-        
-        // 如果还有消息，继续演示
-        if (currentMessageIndex < demoConversation.length) {
-            const nextMessage = demoConversation[currentMessageIndex];
-            const delay = nextMessage.type === 'bot' ? (nextMessage.delay || 2000) : 1500;
-            
-            autoDemoTimer = setTimeout(() => {
-                if (nextMessage.type === 'user') {
-                    // 添加用户消息
-                    addMessage(nextMessage);
-                    currentMessageIndex++;
-                    
-                    // 强制滚动到底部
-                    scrollToBottom();
-                    
-                    // 检查是否是特殊选项，如果是则触发相应操作
-                    if (nextMessage.message === '健康评估' || 
-                        nextMessage.message === '风险分析' || 
-                        nextMessage.message === '保险推荐') {
-                        handleSpecialOptionClick(nextMessage.message);
-                    }
-                    
-                    // 显示机器人正在输入
-                    showTyping();
-                    
-                    // 强制滚动到底部
-                    scrollToBottom();
-                    
-                    // 延迟后显示机器人回复
-                    setTimeout(() => {
-                        removeTyping();
-                        
-                        // 获取下一条机器人消息
-                        if (currentMessageIndex < demoConversation.length) {
-                            const botMessage = demoConversation[currentMessageIndex];
-                            if (botMessage.type === 'bot') {
-                                addMessage(botMessage);
-                                currentMessageIndex++;
-                                
-                                // 确保滚动到底部
-                                scrollToBottom();
+            // 行为分析图表
+            const behaviorCtx = document.getElementById('behaviorChart').getContext('2d');
+            const behaviorChart = new Chart(behaviorCtx, {
+                type: 'radar',
+                data: {
+                    labels: [
+                        advisorTranslations[currentAdvisorLanguage].healthConcern,
+                        advisorTranslations[currentAdvisorLanguage].riskAvoidance,
+                        advisorTranslations[currentAdvisorLanguage].educationEmphasis,
+                        advisorTranslations[currentAdvisorLanguage].financialAwareness,
+                        advisorTranslations[currentAdvisorLanguage].insuranceKnowledge,
+                        advisorTranslations[currentAdvisorLanguage].serviceDependence
+                    ],
+                    datasets: [{
+                        label: advisorTranslations[currentAdvisorLanguage].customerPortrait,
+                        data: [85, 70, 90, 65, 75, 55],
+                        backgroundColor: 'rgba(219, 0, 17, 0.2)',
+                        borderColor: 'rgba(219, 0, 17, 1)',
+                        pointBackgroundColor: 'rgba(219, 0, 17, 1)',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: 'rgba(219, 0, 17, 1)'
+                    }, {
+                        label: advisorTranslations[currentAdvisorLanguage].similarCustomerAverage,
+                        data: [65, 60, 70, 60, 60, 50],
+                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        pointBackgroundColor: 'rgba(54, 162, 235, 1)',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: 'rgba(54, 162, 235, 1)'
+                    }]
+                },
+                options: {
+                    scales: {
+                        r: {
+                            max: 100,
+                            min: 0,
+                            ticks: {
+                                stepSize: 20,
+                                display: false
                             }
                         }
-                        
-                        // 继续自动演示
-                        continueAutoDemo();
-                    }, 1500);
-                } else {
-                    // 添加机器人消息
-                    addMessage(nextMessage);
-                    currentMessageIndex++;
-                    
-                    // 确保滚动到底部
-                    scrollToBottom();
-                    
-                    // 继续自动演示
-                    continueAutoDemo();
-                }
-            }, delay);
-        }
-    }
-    
-    // 停止自动演示
-    function stopAutoDemo() {
-        isAutoDemo = false;
-        if (autoDemoTimer) {
-            clearTimeout(autoDemoTimer);
-            autoDemoTimer = null;
-        }
-    }
-    
-    // 初始化聊天窗口滚动行为
-    function initChatScroll() {
-        // 确保聊天容器有正确的样式设置
-        if (chatMessages) {
-            // 设置基本样式
-            chatMessages.style.overflowY = 'auto';
-            chatMessages.style.maxHeight = '300px'; // 设置最大高度确保可滚动
-            chatMessages.style.scrollBehavior = 'smooth';
-            
-            // 使用 MutationObserver 监听聊天消息变化
-            const messageObserver = new MutationObserver((mutations) => {
-                scrollToBottom();
-            });
-            
-            // 开始观察聊天消息容器的变化
-            messageObserver.observe(chatMessages, {
-                childList: true,
-                subtree: true,
-                characterData: true
-            });
-            
-            // 监听窗口大小变化
-            window.addEventListener('resize', () => {
-                scrollToBottom();
-            });
-            
-            // 监听聊天容器可见性变化
-            const containerObserver = new MutationObserver((mutations) => {
-                mutations.forEach((mutation) => {
-                    if (mutation.attributeName === 'class') {
-                        if (chatContainer.classList.contains('active')) {
-                            // 当聊天窗口变为活动状态时，滚动到底部
-                            scrollToBottom();
+                    },
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return context.dataset.label + ': ' + context.raw + '%';
+                                }
+                            }
                         }
                     }
-                });
-            });
-            
-            containerObserver.observe(chatContainer, { attributes: true });
-            
-            // 初始滚动到底部
-            scrollToBottom();
-            
-            // 添加点击事件，确保点击聊天窗口时滚动条正常工作
-            chatContainer.addEventListener('click', () => {
-                setTimeout(scrollToBottom, 100);
-            });
-        } else {
-            console.error('聊天消息容器不存在');
-        }
-    }
-    
-    // 事件监听
-    chatLauncher.addEventListener('click', () => {
-        openChat();
-        // 自动开始演示
-        startAutoDemo();
-        // 确保滚动到底部
-        scrollToBottom();
-    });
-    
-    chatClose.addEventListener('click', closeChat);
-    chatMinimize.addEventListener('click', minimizeChat);
-    
-    chatSend.addEventListener('click', sendUserMessage);
-    chatInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') {
-            sendUserMessage();
-        }
-    });
-    
-    // 添加国际化支持
-    if (window.i18n) {
-        // 更新占位符文本
-        const updatePlaceholders = () => {
-            const elements = document.querySelectorAll('[data-i18n-placeholder]');
-            elements.forEach(element => {
-                const key = element.getAttribute('data-i18n-placeholder');
-                if (window.i18n.messages[window.i18n.currentLanguage][key]) {
-                    element.placeholder = window.i18n.messages[window.i18n.currentLanguage][key];
                 }
             });
-        };
-        
-        // 初始更新
-        updatePlaceholders();
-        
-        // 语言变更时更新
-        document.addEventListener('languageChanged', updatePlaceholders);
-    }
-}); 
+            
+            // 初始化语言设置
+            initAdvisorLanguage();
+            
+            // 为语言切换按钮添加事件监听
+            document.querySelectorAll('.language-menu .dropdown-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const lang = this.getAttribute('data-lang');
+                    changeAdvisorLanguage(lang);
+                    document.querySelector('.current-language').textContent = this.textContent;
+                });
+            });
+        });
+    </script>
+</body>
+</html> 

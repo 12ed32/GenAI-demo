@@ -11,6 +11,7 @@ const translations = {
         'insuranceRecommendationDesc': '根据您的健康状况和风险评估，我们可以为您推荐最适合的保险产品。',
         'contact': '联系我们',
         'advisorDemo': '客户经理演示',
+        'healthRecordsDemo': '体检记录演示',
         
         // 英雄区域
         'heroTitle': '智能健康与财富规划平台',
@@ -191,9 +192,12 @@ const translations = {
         'monthlyBudgetTitle': '月保费预算',
         
         // 体检历史管理页面
+        'healthRecords': '体检历史',
         'healthRecordsTitle': '体检历史管理',
-        'healthRecordsDescription': '查看和管理您的体检记录，跟踪健康状况变化',
-        'addRecord': '添加记录',
+        'healthRecordsDesc': '在这里查看和管理您的所有体检记录，跟踪您的健康状况变化',
+        'recordsList': '体检记录列表',
+        'addNewRecord': '添加记录',
+        'recordDetails': '体检详情',
         'noRecordsYet': '暂无体检记录',
         'clickAddToStart': '点击"添加记录"开始记录您的健康数据',
         'selectRecord': '请选择一条体检记录查看详情',
@@ -227,12 +231,26 @@ const translations = {
         'hba1c': '糖化血红蛋白',
         'creatinine': '肌酐',
         'doctorComments': '医生评语',
-        'uploadReports': '上传体检报告',
+        'uploadReport': '上传体检报告',
+        'browse': '浏览',
+        'supportedFileTypes': '支持的文件格式: PDF, JPG, PNG',
         'cancel': '取消',
-        'save': '保存',
+        'saveRecord': '保存记录',
         'healthTrends': '健康趋势',
         'healthTrendsDescription': '图表显示了您的健康指标随时间的变化趋势，帮助您更好地了解自己的健康状况',
         'notEnoughDataForTrend': '暂无足够数据显示趋势，请至少添加两条体检记录',
+        
+        // 单位和测量值
+        'cm': 'cm',
+        'kg': 'kg',
+        'mmHg': 'mmHg',
+        'bpm': 'bpm',
+        'celsius': '℃',
+        'mmolL': 'mmol/L',
+        'umolL': 'μmol/L',
+        'percent': '%',
+        'warning': '警告',
+        'danger': '危险'
     },
     
     // 繁体中文
@@ -246,6 +264,7 @@ const translations = {
         'insuranceRecommendationDesc': '根據您的健康狀況和風險評估，我們可以為您推薦最適合的保險產品。',
         'contact': '聯繫我們',
         'advisorDemo': '客戶經理演示',
+        'healthRecordsDemo': '體檢記錄演示',
         
         // 英雄區域
         'heroTitle': '智能健康與財富規劃平台',
@@ -289,7 +308,7 @@ const translations = {
         'bloodSugar': '血糖 (mmol/L)',
         'analyzeData': '分析數據',
         
-        // 风险评估
+        // 風險評估
         'riskAssessmentTitle': '健康風險評估',
         'riskAssessmentDesc': '基於您的健康數據，評估潛在健康風險，並提供針對性預防建議',
         'additionalQuestions': '請回答以下額外問題，以便我們更準確地評估您的健康風險',
@@ -347,7 +366,7 @@ const translations = {
         'scanToCheck': '掃描二維碼查看詳細報告',
         'downloadCard': '下載分享卡片',
         
-        // 页脚
+        // 頁腳
         'footerDesc': '匯豐保險致力於為您提供全方位的保障方案',
         'aboutUs': '關於我們',
         'company': '公司簡介',
@@ -366,7 +385,7 @@ const translations = {
         'privacyPolicy': '隱私政策',
         'termsOfService': '服務條款',
         
-        // 保险推荐模块翻译
+        // 保險推薦模塊翻譯
         'personalInfo': '個人信息',
         'ageGroup': '年齡段',
         'age18to25': '18-25歲',
@@ -400,9 +419,9 @@ const translations = {
         'monthlyPremium': '每月保費',
         'keyFeatures': '主要特點',
         'viewDetails': '查看詳情',
-        'consultAdvisor': '諮詢顧問',
+        'consultAdvisor': '咨詢顧問',
         'disclaimerTitle': '免責聲明：',
-        'disclaimerContent': '以上推薦僅供參考，實際保險需求可能因個人情況而異。建議您諮詢專業保險顧問，獲取更詳細的個性化建議。',
+        'disclaimerContent': '以上推薦僅供參考，實際保險需求可能因個人情況而異。建議您咨詢專業保險顧問，獲取更詳細的個性化建議。',
         'contactAdvisor': '聯繫專業顧問',
         'startOver': '重新開始',
         'noRecommendationsTitle': '暫無匹配的保險產品',
@@ -426,9 +445,12 @@ const translations = {
         'monthlyBudgetTitle': '月保費預算',
         
         // 體檢歷史管理頁面
+        'healthRecords': '體檢歷史',
         'healthRecordsTitle': '體檢歷史管理',
-        'healthRecordsDescription': '查看和管理您的體檢記錄，跟蹤健康狀況變化',
-        'addRecord': '添加記錄',
+        'healthRecordsDesc': '在這裡查看和管理您的所有體檢記錄，跟蹤健康狀況變化',
+        'recordsList': '體檢記錄列表',
+        'addNewRecord': '添加記錄',
+        'recordDetails': '體檢詳情',
         'noRecordsYet': '暫無體檢記錄',
         'clickAddToStart': '點擊"添加記錄"開始記錄您的健康數據',
         'selectRecord': '請選擇一條體檢記錄查看詳情',
@@ -462,12 +484,26 @@ const translations = {
         'hba1c': '糖化血紅蛋白',
         'creatinine': '肌酐',
         'doctorComments': '醫生評語',
-        'uploadReports': '上傳體檢報告',
+        'uploadReport': '上傳體檢報告',
+        'browse': '瀏覽',
+        'supportedFileTypes': '支持的文件格式: PDF, JPG, PNG',
         'cancel': '取消',
-        'save': '保存',
+        'saveRecord': '保存記錄',
         'healthTrends': '健康趨勢',
         'healthTrendsDescription': '圖表顯示了您的健康指標隨時間的變化趨勢，幫助您更好地了解自己的健康狀況',
         'notEnoughDataForTrend': '暫無足夠數據顯示趨勢，請至少添加兩條體檢記錄',
+        
+        // 單位和測量值
+        'cm': 'cm',
+        'kg': 'kg',
+        'mmHg': 'mmHg',
+        'bpm': 'bpm',
+        'celsius': '℃',
+        'mmolL': 'mmol/L',
+        'umolL': 'μmol/L',
+        'percent': '%',
+        'warning': '警告',
+        'danger': '危險'
     },
     
     // 英文
@@ -481,6 +517,7 @@ const translations = {
         'insuranceRecommendationDesc': 'Based on your health status and risk assessment, we can recommend the most suitable insurance products for you.',
         'contact': 'Contact Us',
         'advisorDemo': 'Advisor Demo',
+        'healthRecordsDemo': 'Health Records Demo',
         
         // Hero Section
         'heroTitle': 'Smart Health & Wealth Planning Platform',
@@ -661,9 +698,12 @@ const translations = {
         'monthlyBudgetTitle': 'Monthly Premium Budget',
         
         // Health Records Management Page
+        'healthRecords': 'Health Records',
         'healthRecordsTitle': 'Health Records Management',
-        'healthRecordsDescription': 'View and manage your health examination records, track changes in your health status',
-        'addRecord': 'Add Record',
+        'healthRecordsDesc': 'View and manage your health examination records, track changes in your health status',
+        'recordsList': 'Health Records List',
+        'addNewRecord': 'Add Record',
+        'recordDetails': 'Record Details',
         'noRecordsYet': 'No health records yet',
         'clickAddToStart': 'Click "Add Record" to start recording your health data',
         'selectRecord': 'Please select a health record to view details',
@@ -697,12 +737,26 @@ const translations = {
         'hba1c': 'HbA1c',
         'creatinine': 'Creatinine',
         'doctorComments': 'Doctor Comments',
-        'uploadReports': 'Upload Examination Reports',
+        'uploadReport': 'Upload Examination Report',
+        'browse': 'Browse',
+        'supportedFileTypes': 'Supported file formats: PDF, JPG, PNG',
         'cancel': 'Cancel',
-        'save': 'Save',
+        'saveRecord': 'Save Record',
         'healthTrends': 'Health Trends',
         'healthTrendsDescription': 'The chart shows the trends of your health indicators over time, helping you better understand your health status',
         'notEnoughDataForTrend': 'Not enough data to show trends, please add at least two health records',
+        
+        // 单位和测量值
+        'cm': 'cm',
+        'kg': 'kg',
+        'mmHg': 'mmHg',
+        'bpm': 'bpm',
+        'celsius': '℃',
+        'mmolL': 'mmol/L',
+        'umolL': 'μmol/L',
+        'percent': '%',
+        'warning': 'Warning',
+        'danger': 'Danger'
     }
 };
 

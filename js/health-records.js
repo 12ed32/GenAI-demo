@@ -240,11 +240,11 @@ document.addEventListener('DOMContentLoaded', function() {
                     <div class="indicator-row">
                         <div class="indicator-item">
                             <div class="indicator-label" data-i18n="height">身高</div>
-                            <div class="indicator-value">${record.basicIndicators.height} cm</div>
+                            <div class="indicator-value">${record.basicIndicators.height} <span data-i18n="cm">cm</span></div>
                         </div>
                         <div class="indicator-item">
                             <div class="indicator-label" data-i18n="weight">体重</div>
-                            <div class="indicator-value">${record.basicIndicators.weight} kg</div>
+                            <div class="indicator-value">${record.basicIndicators.weight} <span data-i18n="kg">kg</span></div>
                         </div>
                         <div class="indicator-item">
                             <div class="indicator-label" data-i18n="bmi">BMI</div>
@@ -253,7 +253,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         ${record.basicIndicators.bodyFat ? `
                         <div class="indicator-item">
                             <div class="indicator-label" data-i18n="bodyFat">体脂率</div>
-                            <div class="indicator-value">${record.basicIndicators.bodyFat}%</div>
+                            <div class="indicator-value">${record.basicIndicators.bodyFat}<span data-i18n="percent">%</span></div>
                         </div>
                         ` : ''}
                     </div>
@@ -265,16 +265,16 @@ document.addEventListener('DOMContentLoaded', function() {
                         <div class="indicator-item">
                             <div class="indicator-label" data-i18n="bloodPressure">血压</div>
                             <div class="indicator-value">
-                                <span class="${systolicStatus}">${record.vitalSigns.bloodPressure.systolic}</span>/<span class="${diastolicStatus}">${record.vitalSigns.bloodPressure.diastolic}</span> mmHg
+                                <span class="${systolicStatus}">${record.vitalSigns.bloodPressure.systolic}</span>/<span class="${diastolicStatus}">${record.vitalSigns.bloodPressure.diastolic}</span> <span data-i18n="mmHg">mmHg</span>
                             </div>
                         </div>
                         <div class="indicator-item">
                             <div class="indicator-label" data-i18n="heartRate">心率</div>
-                            <div class="indicator-value">${record.vitalSigns.heartRate} bpm</div>
+                            <div class="indicator-value">${record.vitalSigns.heartRate} <span data-i18n="bpm">bpm</span></div>
                         </div>
                         <div class="indicator-item">
                             <div class="indicator-label" data-i18n="temperature">体温</div>
-                            <div class="indicator-value">${record.vitalSigns.temperature} ℃</div>
+                            <div class="indicator-value">${record.vitalSigns.temperature} <span data-i18n="celsius">℃</span></div>
                         </div>
                     </div>
                 </div>
@@ -284,48 +284,48 @@ document.addEventListener('DOMContentLoaded', function() {
                     <div class="indicator-row">
                         <div class="indicator-item">
                             <div class="indicator-label" data-i18n="bloodGlucose">血糖</div>
-                            <div class="indicator-value ${bloodGlucoseStatus}">${record.bloodWork.bloodGlucose} mmol/L</div>
+                            <div class="indicator-value ${bloodGlucoseStatus}">${record.bloodWork.bloodGlucose} <span data-i18n="mmolL">mmol/L</span></div>
                         </div>
                         ${record.bloodWork.totalCholesterol ? `
                         <div class="indicator-item">
                             <div class="indicator-label" data-i18n="totalCholesterol">总胆固醇</div>
-                            <div class="indicator-value ${totalCholesterolStatus}">${record.bloodWork.totalCholesterol} mmol/L</div>
+                            <div class="indicator-value ${totalCholesterolStatus}">${record.bloodWork.totalCholesterol} <span data-i18n="mmolL">mmol/L</span></div>
                         </div>
                         ` : ''}
                         ${record.bloodWork.hdlCholesterol ? `
                         <div class="indicator-item">
                             <div class="indicator-label" data-i18n="hdlCholesterol">高密度脂蛋白</div>
-                            <div class="indicator-value ${hdlCholesterolStatus}">${record.bloodWork.hdlCholesterol} mmol/L</div>
+                            <div class="indicator-value ${hdlCholesterolStatus}">${record.bloodWork.hdlCholesterol} <span data-i18n="mmolL">mmol/L</span></div>
                         </div>
                         ` : ''}
                         ${record.bloodWork.ldlCholesterol ? `
                         <div class="indicator-item">
                             <div class="indicator-label" data-i18n="ldlCholesterol">低密度脂蛋白</div>
-                            <div class="indicator-value ${ldlCholesterolStatus}">${record.bloodWork.ldlCholesterol} mmol/L</div>
+                            <div class="indicator-value ${ldlCholesterolStatus}">${record.bloodWork.ldlCholesterol} <span data-i18n="mmolL">mmol/L</span></div>
                         </div>
                         ` : ''}
                         ${record.bloodWork.triglycerides ? `
                         <div class="indicator-item">
                             <div class="indicator-label" data-i18n="triglycerides">甘油三酯</div>
-                            <div class="indicator-value">${record.bloodWork.triglycerides} mmol/L</div>
+                            <div class="indicator-value">${record.bloodWork.triglycerides} <span data-i18n="mmolL">mmol/L</span></div>
                         </div>
                         ` : ''}
                         ${record.bloodWork.uricAcid ? `
                         <div class="indicator-item">
                             <div class="indicator-label" data-i18n="uricAcid">尿酸</div>
-                            <div class="indicator-value">${record.bloodWork.uricAcid} μmol/L</div>
+                            <div class="indicator-value">${record.bloodWork.uricAcid} <span data-i18n="umolL">μmol/L</span></div>
                         </div>
                         ` : ''}
                         ${record.bloodWork.hba1c ? `
                         <div class="indicator-item">
                             <div class="indicator-label" data-i18n="hba1c">糖化血红蛋白</div>
-                            <div class="indicator-value">${record.bloodWork.hba1c}%</div>
+                            <div class="indicator-value">${record.bloodWork.hba1c}<span data-i18n="percent">%</span></div>
                         </div>
                         ` : ''}
                         ${record.bloodWork.creatinine ? `
                         <div class="indicator-item">
                             <div class="indicator-label" data-i18n="creatinine">肌酐</div>
-                            <div class="indicator-value">${record.bloodWork.creatinine} μmol/L</div>
+                            <div class="indicator-value">${record.bloodWork.creatinine} <span data-i18n="umolL">μmol/L</span></div>
                         </div>
                         ` : ''}
                     </div>
